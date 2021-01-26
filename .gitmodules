@@ -1,0 +1,7 @@
+[submodule "jamming"]
+	path = jamming
+	url = https://github.com/AEMuto/jamming
+
+[submodule "ravenous"]
+	path = ravenous
+	url = https://github.com/AEMuto/ravenous

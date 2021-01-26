@@ -1,5 +1,6 @@
-const clientId = "cce2d3136fb14d93b7a8d25628d84354";
-const redirectUri = "http://super-jammming.surge.sh";
+import ACCES_TOKEN from '../../.env';
+const clientId = ACCES_TOKEN;
+const redirectUri = 'http://super-jammming.surge.sh';
 let accessToken;
 
 const Spotify = {
@@ -15,8 +16,8 @@ const Spotify = {
       accessToken = accessTokenMatch[1];
       const expiresIn = Number(expiresInMatch[1]);
       // Clear Parameter, allow grabbing a new access token when it epires
-      window.setTimeout(() => (accessToken = ""), expiresIn * 1000);
-      window.history.pushState("Access Token", null, "/");
+      window.setTimeout(() => (accessToken = ''), expiresIn * 1000);
+      window.history.pushState('Access Token', null, '/');
       return accessToken;
     } else {
       const accesUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`;
@@ -27,7 +28,7 @@ const Spotify = {
   search(term) {
     const token = Spotify.getAccessToken();
     return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` }
     })
       .then((response) => response.json())
       .then((jsonResponse) => {
@@ -40,7 +41,7 @@ const Spotify = {
             name: track.name,
             artist: track.artists[0].name,
             album: track.album.name,
-            uri: track.uri,
+            uri: track.uri
           };
         });
       });
@@ -54,15 +55,15 @@ const Spotify = {
     const headers = { Authorization: `Bearer ${accessToken}` };
     let userId;
     return fetch(`https://api.spotify.com/v1/me`, {
-      headers: headers,
+      headers: headers
     })
       .then((response) => response.json())
       .then((jsonResponse) => {
         userId = jsonResponse.id;
         return fetch(`https://api.spotify.com/v1/users/${userId}}/playlists`, {
           headers: headers,
-          method: "POST",
-          body: JSON.stringify({ name: name }),
+          method: 'POST',
+          body: JSON.stringify({ name: name })
         })
           .then((response) => response.json())
           .then((jsonResponse) => {
@@ -71,13 +72,13 @@ const Spotify = {
               `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`,
               {
                 headers: headers,
-                method: "POST",
-                body: JSON.stringify({ uris: trackUris }),
+                method: 'POST',
+                body: JSON.stringify({ uris: trackUris })
               }
             );
           });
       });
-  },
+  }
 };
 
 export default Spotify;
